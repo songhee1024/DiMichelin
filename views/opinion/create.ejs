@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../header"); %>
+  <body>
+    <%- include("../menu"); %>
+    <style>
+      #createForm {
+        margin: 0 auto;
+        padding: 10px 70px;
+      }
+      img {
+        width: 600px;
+        float: right;
+        margin-top: 70px;
+      }
+    </style>
+
+    <form id="createForm">
+      <!--Material input-->
+      <div class="md-form">
+        <input type="text" id="title" class="form-control" required />
+        <label for="title">Input title</label>
+      </div>
+      <div class="md-form">
+        <input type="text" id="story" class="form-control" required />
+        <label for="story">Input story</label>
+      </div>
+      <div class="md-form">
+        <input type="text" id="score" class="form-control" required />
+        <label for="score">Input score(1~5)</label>
+      </div>
+
+      <button type="submit" class="btn btn-secondary">
+        Create
+      </button>
+      <button onclick="location.href='/api/opinion'" class="btn btn-secondary">
+        List
+      </button>
+      <img src="/images/59888.jpg" />
+    </form>
+
+    <%-include("../footer");%>
+
+    <script>
+      $(function () {
+        $("#createForm").submit((event) => {
+          event.preventDefault();
+          const score = $("#score").val();
+          const title = $("#title").val();
+          const story = $("#story").val();
+
+          $.ajax({
+            url: "/api/opinion",
+            type: "POST",
+            data: { score, title, story },
+          })
+            .done(() => {
+              location.href = "/api/opinion";
+            })
+            .fail((request, status, error) => {
+              alert(request.responseText);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

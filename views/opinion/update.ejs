@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../header"); %>
+  <body>
+    <%- include("../menu"); %>
+
+    <style>
+      #updateForm {
+        margin: 0 auto;
+        padding: 40px 80px;
+      }
+    </style>
+    <form id="updateForm">
+      <!-- Material input -->
+
+      <div class="md-form">
+        <input
+          type="text"
+          id="title"
+          class="form-control"
+          value="<%=result.title%>"
+          required
+        />
+        <label for="title">Input title</label>
+      </div>
+      <div class="md-form">
+        <input
+          type="text"
+          id="story"
+          class="form-control"
+          value="<%=result.story%>"
+          required
+        />
+        <label for="story">Input story</label>
+      </div>
+      <div class="md-form">
+        <input
+          type="text"
+          id="score"
+          class="form-control"
+          value="<%=result.score%>"
+          required
+        />
+        <label for="score">Input score(1~5)</label>
+      </div>
+      <button type="submit" class="btn btn-secondary">save</button>
+    </form>
+
+    <%-include("../footer");%>
+
+    <script>
+      $(function () {
+        $("#updateForm").submit((event) => {
+          event.preventDefault();
+          const score = $("#score").val();
+          const title = $("#title").val();
+          const story = $("#story").val();
+
+          $.ajax({
+            url: "/api/opinion/<%=result._id%>",
+            type: "PUT",
+            data: { score, title, story },
+          })
+            .done(() => {
+              location.href = "/api/opinion/";
+            })
+            .fail((request, status, error) => {
+              alert(request.responseText);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

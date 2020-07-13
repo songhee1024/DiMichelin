@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+  .meal{
+    float: left; 
+    width:28%; 
+    margin-left:5%; 
+    margin-top:2%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding:5%;
+  }
+  </style>
+
+  <%- include("../header"); %>
+  <body>
+
+    <%- include("../menu"); %>
+    <button
+            type="button"
+            class="btn purple-gradient"
+            onclick="location.href='/api/opinion/new'"
+            style="float: left; font-weight: 500; font-size: 100; margin-top: 20px; margin-left: 20px;"
+          >
+            Create
+          </button>
+        <div style=" margin-left: 160px; margin-top: 20px; font-size:30px;">
+          <p><strong>평균 점수 : <%=avg%></strong>  </p> </div>
+         
+
+    <div>
+        <div class="meal" >
+          <p style="font-size: 30px;" class="font-weight-bold mb-4"> 오늘의 급식 </p>
+        <span id="bob" style="font-size: 23px;"></span>   
+        <a
+        href="#"
+        class="btn btn-flat deep-purple-text p-1 mx-0 mb-0"
+        onclick="location.href='/api/opinion/meal'"
+        style="float:right; margin-top:60px;"
+        >Read More</a
+      >
+        </div>
+        
+          <div class="row row-cols-1 row-cols-md-3" style="float:right; margin-right:3%; max-width: 60%;"  >
+            <% result.forEach(opinion => { %>
+            <div class="col mb-4">
+              <!-- Card -->
+              <div class="card booking-card">
+                <!-- Card image -->
+                <div class="view overlay">
+                    <img
+                    class="card-img-top"
+                    src='https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img(<%=opinion.rand%>).jpg'
+                    alt="Card image cap"
+                  /> 
+                  <a href="#!">
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+
+                <!-- Card content -->
+                <div class="card-body">
+                  <!-- Title -->
+                  <h4 class="card-title font-weight-bold">
+                    <a><%=opinion.title%></a>
+                  </h4>
+                  <!-- Data -->
+                 
+                  <ul class="list-unstyled list-inline rating mb-0">
+                    <% 
+                    for(let i=0; i<opinion.score; i++) { %>
+                      <li class="list-inline-item mr-0">
+                        <i class="fas fa-star amber-text"></i>
+                      </li>
+                     <% } 
+                     %>
+                   
+                    <li class="list-inline-item">
+                      <p class="text-muted"><%=opinion.score%> </p>
+                    </li>
+                  </ul>
+                  <!-- Text -->
+                  <p class="card-text">
+                    <%=opinion.story%>
+                  </p>
+                  <hr class="my-4" />
+                  <a
+                    href="#"
+                    class="btn btn-flat deep-purple-text p-1 mx-0 mb-0"
+                    onclick="location.href='/api/opinion/<%=opinion._id%>'"
+                    >Read More</a
+                  >
+                </div>
+              </div>
+              <!-- Card -->
+            </div>
+            <%}); %>
+          </div>
+        </div>
+    </div>
+
+    <%-include("../footer");%>
+    <script>
+       $.ajax({
+         method: 'get',
+         url: 'https://api.dimigo.in/dimibobs/today'
+       }).then(res => {
+        console.log(res);
+        const hour = new Date().getHours();
+        
+        const result = res[hour < 9 ? 'breakfast' : hour < 14 ? 'lunch' : 'dinner' ];
+        $('#bob').text(result);
+       }).fail(err => {
+
+       })
+
+    </script>
+
+  </body>
+</html>

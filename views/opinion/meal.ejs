@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../header"); %>
+  <body>
+    <style>
+      .bob-wrap {
+        display: flex;
+      }
+      .imgg > img {
+        width: 800px;
+        float: left;
+        margin-top: 7%;
+      }
+      #bob {
+        font-size: 23px;
+        border-radius: 10rem;
+        margin-top: 8%;
+        margin-right: 10%;
+        margin-left: 5%;
+        color: gray;
+      }
+      .time {
+        font-size: 25px;
+        font-weight: 500;
+        color: black;
+      }
+    </style>
+    <%- include("../menu"); %>
+
+    <div class="bob-wrap">
+      <div class="imgg">
+        <img class="imgg" src="/images/5912.jpg" />
+      </div>
+
+      <div id="bob" class="font-weight mb-4">
+        <div>
+          <div class="time">아침</div>
+          <div class="content breakfast"></div>
+          <br />
+        </div>
+        <div>
+          <div class="time">점심</div>
+          <div class="content lunch"></div>
+          <br />
+        </div>
+        <div>
+          <div class="time">저녁</div>
+          <div class="content dinner"></div>
+        </div>
+      </div>
+    </div>
+
+    <%-include("../footer");%>
+    <script>
+      $.ajax({
+        method: "get",
+        url: "https://api.dimigo.in/dimibobs/today",
+      })
+        .then((res) => {
+          console.log(res);
+          $(".breakfast").text(res.breakfast);
+          $(".lunch").text(res.lunch);
+          $(".dinner").text(res.dinner);
+        })
+        .fail((err) => {});
+    </script>
+  </body>
+</html>
